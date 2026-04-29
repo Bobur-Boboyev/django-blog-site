@@ -15,11 +15,26 @@
 
 {% endif %}
 
-<p>Category: {{ post.category.name }}</p>
+<p>Category: {{ blog.category.name }}</p>
 
-<p><b>Author:</b> {{ blog.author.username }}</p>
+<p><b>Author:</b> 
+    <a href="{% url 'profile' blog.author.username %}">
+    {{ blog.author.username }}</a>
+</p>
 
 <p><b>Date:</b> {{ blog.created_at }}</p>
+
+<form method="POST" action="{% url 'like-blog' blog.id %}">
+    {% csrf_token %}
+
+    {% if request.user in blog.likes.all %}
+        <button type="submit">Unlike</button>
+    {% else %}
+        <button type="submit">Like</button>
+    {% endif %}
+</form>
+
+<p>Likes: {{ blog.likes.count }}</p>
 
 <p>{{ blog.content }}</p>
 
@@ -27,8 +42,16 @@
 
 {% for comment in blog.comments.all %}
     <p>
-        <b>{{ comment.author.username }}</b>: {{ comment.content }}
+        <b><a href="{% url 'profile' comment.author.username %}">{{ comment.author.username }}</a></b>: {{ comment.content }}
     </p>
+
+    {% if request.user == comment.author %}
+        <form method="POST" action="{% url 'delete-comment' comment.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    {% endif %}
+    
 {% endfor %}
 
 {% if user.is_authenticated %}

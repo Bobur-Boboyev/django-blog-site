@@ -11,8 +11,14 @@
 
         <nav>
             <a href="/">Home</a>
+            {% if user.is_authenticated %}
+                <a href="/feed/">Feed</a>
+                <a href="/notifications/">Notifications</a>
+            {% endif %}
+            
             <a href="/create/">Create</a>
             <a href="/categories/">Categories</a>
+            <a href="{% url 'profile' user.username %}">Profile</a>
 
             {% if user.is_authenticated %}
                 <span>Hi, {{ user.username }}</span>

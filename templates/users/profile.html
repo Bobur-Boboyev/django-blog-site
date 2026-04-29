@@ -1,0 +1,34 @@
+<a href="/">Home</a>
+<a href="{% url 'liked-blogs' %}">Liked Blogs</a>  
+
+<h1>{{ profile_user.username }}</h1>
+
+{% if profile_user.profile.avatar %}
+    <img src="{{ profile_user.profile.avatar.url }}" width="100">
+{% endif %}
+
+<p>{{ profile_user.profile.bio }}</p>
+
+{% if current_user != profile_user %}
+<form method="POST" action="{% url 'follow' profile_user.username %}">
+    {% csrf_token %}
+    <button type="submit">
+        Follow / Unfollow
+    </button>
+</form>
+{% endif %}
+
+<p>
+    Followers:
+    {{ profile_user.profile.followers.count|default:0 }}
+</p>
+
+<h3>Blogs</h3>
+
+{% for blog in profile_user.posts.all %}
+    <a href="{% url 'blog-detail' blog.id %}"><br>
+        {{ blog.title }}
+    </a>
+{% empty %}
+    <p>No blogs yet</p>
+{% endfor %}

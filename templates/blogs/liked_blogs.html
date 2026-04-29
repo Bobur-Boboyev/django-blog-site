@@ -1,0 +1,17 @@
+<h1>Liked Blogs</h1>
+
+<a href="/">Home</a>
+
+{% for blog in blogs %}
+    <h2>
+        <a href="{% url 'blog-detail' blog.id %}">
+            {{ blog.title }}
+        </a>
+    </h2>
+
+    <p>{{ blog.content|truncatewords:20 }}</p>
+
+    <hr>
+{% empty %}
+    <p>You haven't liked any blogs yet.</p>
+{% endfor %}

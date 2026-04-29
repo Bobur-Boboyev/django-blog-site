@@ -19,7 +19,12 @@ class Post(models.Model):
         null=True,
         blank=True,
         related_name='posts'
-)
+    )
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='liked_posts',
+        blank=True)
+
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
