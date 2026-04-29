@@ -1,17 +1,19 @@
-<h1>Liked Blogs</h1>
+{% extends "base.html" %}
 
-<a href="/">Home</a>
+{% block content %}
+
+<h2>Liked Posts</h2>
 
 {% for blog in blogs %}
-    <h2>
+    <div class="card">
         <a href="{% url 'blog-detail' blog.id %}">
-            {{ blog.title }}
+            <h3>{{ blog.title }}</h3>
         </a>
-    </h2>
-
-    <p>{{ blog.content|truncatewords:20 }}</p>
-
-    <hr>
+    </div>
 {% empty %}
-    <p>You haven't liked any blogs yet.</p>
+    <div class="empty-state">
+        You haven't liked any posts yet
+    </div>
 {% endfor %}
+
+{% endblock %}

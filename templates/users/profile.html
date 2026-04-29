@@ -6,6 +6,9 @@
 
     <!-- LEFT SIDEBAR -->
     <aside class="profile-sidebar">
+        {% if profile_user == current_user %}
+            <a href="{% url 'edit-profile' profile_user.username %}" class="btn btn-secondary">Edit Profile</a><br><br>
+        {% endif %}
 
         {% if profile_user.profile.avatar %}
             <img class="avatar" src="{{ profile_user.profile.avatar.url }}">
@@ -40,7 +43,9 @@
     <!-- RIGHT CONTENT -->
     <section class="profile-posts">
 
-        <a href="{% url 'blog-create' %}" class="btn btn-primary">Create New Post</a>
+        {% if current_user == profile_user %}
+        <a href="{% url 'blog-create' %}" class="btn btn-primary">Create New Post</a><br><br>
+        {% endif %}
 
         <h3>Posts</h3>
 

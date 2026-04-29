@@ -66,8 +66,10 @@ def follow_user(request, username):
 
 
 @login_required
-def edit_profile(request):
-    profile = request.user.profile
+def edit_profile(request, username):
+    User = get_user_model()
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)

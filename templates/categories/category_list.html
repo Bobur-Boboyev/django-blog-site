@@ -2,16 +2,18 @@
 
 {% block content %}
 
-<h1>Categories</h1>
+<h2>Categories</h2>
 
-<ul>
+<ul class="card">
     {% for category in categories %}
         <li>
             <a href="{% url 'blogs-by-category' category.slug %}">
                 {{ category.name }}
             </a>
         </li>
+    {% empty %}
+        <div class="empty-state">No categories yet</div>
     {% endfor %}
 </ul>
 
-{% endblock content %}
+{% endblock %}
