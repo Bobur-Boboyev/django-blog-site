@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django Blog</title>
+</head>
+<body>
+
+    <header>
+        <h2>My Blog Platform</h2>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/create/">Create</a>
+            <a href="/categories/">Categories</a>
+
+            {% if user.is_authenticated %}
+                <span>Hi, {{ user.username }}</span>
+
+                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+
+            {% else %}
+                <a href="/login/">Login</a>
+                <a href="/users/register/">Register</a>
+            {% endif %}
+            <form method="GET" action="/">
+                <input type="text" name="q" placeholder="Search blogs...">
+            <button type="submit">Search</button>
+</form>
+        </nav>
+
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>© 2026 Blog Platform</p>
+    </footer>
+
+</body>
+</html>

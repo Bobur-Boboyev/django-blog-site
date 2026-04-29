@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Register</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <p>
+        {{ form.username.label_tag }}<br>
+        {{ form.username }}
+    </p>
+
+    <p>
+        {{ form.email.label_tag }}<br>
+        {{ form.email }}
+    </p>
+
+    <p>
+        {{ form.password1.label_tag }}<br>
+        <div style="display:flex; align-items:center; gap:8px;">
+            {{ form.password1 }}
+            <button type="button" onclick="togglePassword()">👁</button>
+        </div>
+    </p>
+
+    <p>
+        {{ form.password2.label_tag }}<br>
+        <div style="display:flex; align-items:center; gap:8px;">
+            {{ form.password2 }}
+            <button type="button" onclick="togglePassword()">👁</button>
+        </div>
+    </p>
+
+    <button type="submit">Create Account</button>
+</form>
+
+<script>
+function togglePassword() {
+    const pwd1 = document.getElementById("id_password1");
+    const pwd2 = document.getElementById("id_password2");
+
+    if (!pwd1) return;
+
+    pwd1.type = pwd1.type === "password" ? "text" : "password";
+    pwd2.type = pwd2.type === "password" ? "text" : "password";
+}
+</script>
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Blogs</h1>
+
+{% if query %}
+    <p>Search result for: <b>{{ query }}</b></p>
+{% endif %}
+
+{% for blog in blogs %}
+    <h2>
+        <a href="{% url 'blog-detail' blog.id %}">
+            {{ blog.title }}
+        </a>
+    </h2>
+
+    <p>{{ blog.content|truncatewords:20 }}</p>
+    <small>{{ blog.author.username }}</small>
+    <hr>
+{% endfor %}
+
+{% endblock content %}
