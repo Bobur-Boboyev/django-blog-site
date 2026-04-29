@@ -2,68 +2,106 @@
 
 {% block content %}
 
-<h1>{{ blog.title }}</h1>
+<article class="article">
 
-{% if user == blog.author %}
+    <!-- HEADER -->
+    <header class="article-header">
 
-    <a href="{% url 'blog-edit' blog.id %}">Edit</a>
+        <h1 class="article-title">{{ blog.title }}</h1>
 
-    <form method="POST" action="{% url 'blog-delete' blog.id %}" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
+        <div class="article-meta">
+            <a href="{% url 'profile' blog.author.username %}">
+                {{ blog.author.username }}
+            </a>
+            •
+            <span>{{ blog.created_at }}</span>
+            •
+            <span>Category: {{ blog.category.name }}</span>
+        </div>
 
-{% endif %}
+    </header>
 
-<p>Category: {{ blog.category.name }}</p>
+    <!-- ACTIONS -->
+    <div class="article-actions">
 
-<p><b>Author:</b> 
-    <a href="{% url 'profile' blog.author.username %}">
-    {{ blog.author.username }}</a>
-</p>
+        {% if user == blog.author %}
 
-<p><b>Date:</b> {{ blog.created_at }}</p>
+            <a class="btn" href="{% url 'blog-edit' blog.id %}">Edit</a>
 
-<form method="POST" action="{% url 'like-blog' blog.id %}">
-    {% csrf_token %}
+            <form method="POST" action="{% url 'blog-delete' blog.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button class="btn btn-danger">Delete</button>
+            </form>
 
-    {% if request.user in blog.likes.all %}
-        <button type="submit">Unlike</button>
-    {% else %}
-        <button type="submit">Like</button>
-    {% endif %}
-</form>
+        {% endif %}
 
-<p>Likes: {{ blog.likes.count }}</p>
-
-<p>{{ blog.content }}</p>
-
-<h3>Comments</h3>
-
-{% for comment in blog.comments.all %}
-    <p>
-        <b><a href="{% url 'profile' comment.author.username %}">{{ comment.author.username }}</a></b>: {{ comment.content }}
-    </p>
-
-    {% if request.user == comment.author %}
-        <form method="POST" action="{% url 'delete-comment' comment.id %}">
+        <form method="POST" action="{% url 'like-blog' blog.id %}">
             {% csrf_token %}
-            <button type="submit">Delete</button>
+
+            {% if request.user in blog.likes.all %}
+                <button class="btn">Unlike</button>
+            {% else %}
+                <button class="btn btn-primary">Like</button>
+            {% endif %}
+        </form>
+
+        <span class="likes-count">
+            {{ blog.likes.count }} likes
+        </span>
+
+    </div>
+
+    <!-- CONTENT -->
+    <section class="article-content">
+        {{ blog.content }}
+    </section>
+
+</article>
+
+<hr>
+
+<!-- COMMENTS -->
+<section class="comments">
+
+    <h2>Comments</h2>
+
+    {% for comment in blog.comments.all %}
+
+        <div class="comment">
+
+            <div class="comment-header">
+                <a href="{% url 'profile' comment.author.username %}">
+                    {{ comment.author.username }}
+                </a>
+            </div>
+
+            <p class="comment-body">
+                {{ comment.content }}
+            </p>
+
+            {% if request.user == comment.author %}
+                <form method="POST" action="{% url 'delete-comment' comment.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+        <p>No comments yet</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <form method="POST" class="comment-form" action="{% url 'add-comment' blog.id %}">
+            {% csrf_token %}
+            <textarea name="content" placeholder="Write a comment..."></textarea>
+            <button class="btn btn-primary">Send</button>
         </form>
     {% endif %}
-    
-{% endfor %}
 
-{% if user.is_authenticated %}
+</section>
 
-<form method="POST" action="{% url 'add-comment' blog.id %}">
-    {% csrf_token %}
-    <textarea name="content"></textarea>
-    <button type="submit">Add Comment</button>
-</form>
+<a href="/" class="back-link">← Back</a>
 
-{% endif %}
-
-<a href="/">Back</a>
-
-{% endblock content %}
+{% endblock %}

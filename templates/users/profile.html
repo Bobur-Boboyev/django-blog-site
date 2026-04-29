@@ -1,34 +1,69 @@
-<a href="/">Home</a>
-<a href="{% url 'liked-blogs' %}">Liked Blogs</a>  
+{% extends "base.html" %}
 
-<h1>{{ profile_user.username }}</h1>
+{% block content %}
 
-{% if profile_user.profile.avatar %}
-    <img src="{{ profile_user.profile.avatar.url }}" width="100">
-{% endif %}
+<div class="profile">
 
-<p>{{ profile_user.profile.bio }}</p>
+    <!-- LEFT SIDEBAR -->
+    <aside class="profile-sidebar">
 
-{% if current_user != profile_user %}
-<form method="POST" action="{% url 'follow' profile_user.username %}">
-    {% csrf_token %}
-    <button type="submit">
-        Follow / Unfollow
-    </button>
-</form>
-{% endif %}
+        {% if profile_user.profile.avatar %}
+            <img class="avatar" src="{{ profile_user.profile.avatar.url }}">
+        {% else %}
+            <div class="avatar placeholder"></div>
+        {% endif %}
 
-<p>
-    Followers:
-    {{ profile_user.profile.followers.count|default:0 }}
-</p>
+        <h2>{{ profile_user.username }}</h2>
 
-<h3>Blogs</h3>
+        <p class="bio">
+            {{ profile_user.profile.bio|default:"No bio yet" }}
+        </p>
 
-{% for blog in profile_user.posts.all %}
-    <a href="{% url 'blog-detail' blog.id %}"><br>
-        {{ blog.title }}
-    </a>
-{% empty %}
-    <p>No blogs yet</p>
-{% endfor %}
+        <div class="stats">
+            <div>
+                <strong>{{ profile_user.profile.followers.count }}</strong>
+                <span>Followers</span>
+            </div>
+        </div>
+
+        {% if current_user != profile_user %}
+        <form method="POST" action="{% url 'follow' profile_user.username %}">
+            {% csrf_token %}
+            <button class="btn btn-primary">
+                Follow / Unfollow
+            </button>
+        </form>
+        {% endif %}
+
+    </aside>
+
+    <!-- RIGHT CONTENT -->
+    <section class="profile-posts">
+
+        <a href="{% url 'blog-create' %}" class="btn btn-primary">Create New Post</a>
+
+        <h3>Posts</h3>
+
+        {% for blog in profile_user.posts.all %}
+
+            <div class="card">
+
+                <h3>
+                    <a href="{% url 'blog-detail' blog.id %}">
+                        {{ blog.title }}
+                    </a>
+                </h3>
+
+                <p>{{ blog.content|truncatewords:20 }}</p>
+
+            </div>
+
+        {% empty %}
+            <p>No posts yet</p>
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}

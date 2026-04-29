@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
 from apps.core.models import Notification
+from apps.users.models import Profile
 from .forms import ProfileForm, RegisterForm
 
 
@@ -14,6 +15,7 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.create(user=user)
             login(request, user)
             return redirect('blog-list')
     else:

@@ -1,16 +1,69 @@
-<h1>Feed</h1>
+{% extends "base.html" %}
 
-{% for blog in blogs %}
-    <h2>{{ blog.title }}</h2>
+{% block content %}
 
-    <p>
-        by
-        <a href="{% url 'profile' blog.author.username %}">
-            {{ blog.author.username }}
-        </a>
-    </p>
+<div class="feed">
 
-    <p>{{ blog.content|truncatewords:20 }}</p>
+    <h1 class="page-title">Your Feed</h1>
 
-    <hr>
-{% endfor %}
+    {% for blog in blogs %}
+
+    <div class="post-card">
+
+        <!-- USER HEADER -->
+        <div class="post-header">
+
+            <a href="{% url 'profile' blog.author.username %}" class="user-link">
+                {{ blog.author.username }}
+            </a>
+
+            <span class="dot">•</span>
+
+            <span class="date">{{ blog.created_at }}</span>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="post-body">
+            <h2>
+                <a href="{% url 'blog-detail' blog.id %}">
+                    {{ blog.title }}
+                </a>
+            </h2>
+
+            <p>{{ blog.content|truncatewords:25 }}</p>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="post-actions">
+
+            <form method="POST" action="{% url 'like-blog' blog.id %}">
+                {% csrf_token %}
+
+                {% if request.user in blog.likes.all %}
+                    <button class="btn">Unlike</button>
+                {% else %}
+                    <button class="btn btn-primary">Like</button>
+                {% endif %}
+
+            </form>
+
+            <span class="likes">
+                {{ blog.likes.count }} likes
+            </span>
+
+            <a class="btn" href="{% url 'blog-detail' blog.id %}">
+                Comment
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+        <p>No feed available</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
