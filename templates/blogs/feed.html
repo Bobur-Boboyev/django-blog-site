@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<div class="feed">
+<div class="feed-container">
 
     <h1 class="page-title">Your Feed</h1>
 
     {% for blog in blogs %}
 
-    <div class="post-card">
+    <article class="post-card">
 
-        <!-- USER HEADER -->
+        <!-- HEADER -->
         <div class="post-header">
 
             <a href="{% url 'profile' blog.author.username %}" class="user-link">
@@ -23,15 +23,19 @@
 
         </div>
 
-        <!-- CONTENT -->
+        <!-- BODY -->
         <div class="post-body">
-            <h2>
+
+            <h2 class="post-title">
                 <a href="{% url 'blog-detail' blog.id %}">
                     {{ blog.title }}
                 </a>
             </h2>
 
-            <p>{{ blog.content|truncatewords:25 }}</p>
+            <p class="post-text">
+                {{ blog.content|truncatewords:25 }}
+            </p>
+
         </div>
 
         <!-- ACTIONS -->
@@ -52,16 +56,18 @@
                 {{ blog.likes.count }} likes
             </span>
 
-            <a class="btn" href="{% url 'blog-detail' blog.id %}">
-                Comment
+            <a class="btn btn-secondary" href="{% url 'blog-detail' blog.id %}">
+                Open
             </a>
 
         </div>
 
-    </div>
+    </article>
 
     {% empty %}
-        <p>No feed available</p>
+        <div class="empty-state">
+            No feed available
+        </div>
     {% endfor %}
 
 </div>

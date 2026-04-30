@@ -1,7 +1,34 @@
-<h2>Notifications</h2>
+{% extends "base.html" %}
 
-{% for n in notifications %}
-    <p>{{ n.message }}</p>
-{% empty %}
-    <p>No notifications</p>
-{% endfor %}
+{% block content %}
+
+<div class="feed-container">
+
+    <h1 class="page-title">Notifications</h1>
+
+    <div class="notifications">
+
+        {% for n in notifications %}
+
+            <div class="notification-card">
+
+                <div class="notification-text">
+                    {{ n.message }}
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty-state">
+                <h3>No notifications yet</h3>
+                <p>When something happens, you'll see it here.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

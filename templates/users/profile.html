@@ -2,69 +2,89 @@
 
 {% block content %}
 
-<div class="profile">
+<div class="profile-container">
 
-    <!-- LEFT SIDEBAR -->
-    <aside class="profile-sidebar">
-        {% if profile_user == current_user %}
-            <a href="{% url 'edit-profile' profile_user.username %}" class="btn btn-secondary">Edit Profile</a><br><br>
-        {% endif %}
+    <!-- HEADER -->
+    <section class="profile-header">
 
-        {% if profile_user.profile.avatar %}
-            <img class="avatar" src="{{ profile_user.profile.avatar.url }}">
-        {% else %}
-            <div class="avatar placeholder"></div>
-        {% endif %}
-
-        <h2>{{ profile_user.username }}</h2>
-
-        <p class="bio">
-            {{ profile_user.profile.bio|default:"No bio yet" }}
-        </p>
-
-        <div class="stats">
-            <div>
-                <strong>{{ profile_user.profile.followers.count }}</strong>
-                <span>Followers</span>
-            </div>
+        <div class="profile-avatar">
+            {% if profile_user.profile.avatar %}
+                <img src="{{ profile_user.profile.avatar.url }}">
+            {% else %}
+                <div class="avatar-placeholder"></div>
+            {% endif %}
         </div>
 
-        {% if current_user != profile_user %}
-        <form method="POST" action="{% url 'follow' profile_user.username %}">
-            {% csrf_token %}
-            <button class="btn btn-primary">
-                Follow / Unfollow
-            </button>
-        </form>
-        {% endif %}
+        <div class="profile-info">
 
-    </aside>
+            <h1>{{ profile_user.username }}</h1>
 
-    <!-- RIGHT CONTENT -->
+            <p class="bio">
+                {{ profile_user.profile.bio|default:"No bio yet" }}
+            </p>
+
+            <div class="profile-stats">
+                <div>
+                    <strong>{{ profile_user.profile.followers.count }}</strong>
+                    <span>Followers</span>
+                </div>
+
+                <div>
+                    <strong>{{ profile_user.profile.following.count|default:0 }}</strong>
+                    <span>Following</span>
+                </div>
+
+                <div>
+                    <strong>{{ profile_user.posts.count }}</strong>
+                    <span>Posts</span>
+                </div>
+            </div>
+
+            {% if profile_user != current_user %}
+                <form method="POST" action="{% url 'follow' profile_user.username %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">
+                        Follow / Unfollow
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'edit-profile' profile_user.username %}" class="btn btn-secondary">
+                    Edit Profile
+                </a>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <!-- POSTS -->
     <section class="profile-posts">
 
-        {% if current_user == profile_user %}
-        <a href="{% url 'blog-create' %}" class="btn btn-primary">Create New Post</a><br><br>
-        {% endif %}
-
-        <h3>Posts</h3>
+        <h2 class="section-title">Posts</h2>
 
         {% for blog in profile_user.posts.all %}
 
-            <div class="card">
+            <div class="post-card">
 
-                <h3>
+                <h3 class="post-title">
                     <a href="{% url 'blog-detail' blog.id %}">
                         {{ blog.title }}
                     </a>
                 </h3>
 
-                <p>{{ blog.content|truncatewords:20 }}</p>
+                <p class="post-text">
+                    {{ blog.content|truncatewords:25 }}
+                </p>
 
             </div>
 
         {% empty %}
-            <p>No posts yet</p>
+
+            <div class="empty-state">
+                <h3>No posts yet</h3>
+                <p>This user hasn't published anything yet.</p>
+            </div>
+
         {% endfor %}
 
     </section>

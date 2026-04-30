@@ -2,18 +2,30 @@
 
 {% block content %}
 
-<h2>Categories</h2>
+<div class="feed-container">
 
-<ul class="card">
-    {% for category in categories %}
-        <li>
-            <a href="{% url 'blogs-by-category' category.slug %}">
-                {{ category.name }}
+    <h1 class="page-title">Categories</h1>
+
+    <div class="category-grid">
+
+        {% for category in categories %}
+
+            <a class="category-card" href="{% url 'blogs-by-category' category.slug %}">
+                <h3>{{ category.name }}</h3>
+                <span>Explore posts →</span>
             </a>
-        </li>
-    {% empty %}
-        <div class="empty-state">No categories yet</div>
-    {% endfor %}
-</ul>
+
+        {% empty %}
+
+            <div class="empty-state">
+                <h3>No categories yet</h3>
+                <p>Create categories to organize your content.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
 
 {% endblock %}

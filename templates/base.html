@@ -3,54 +3,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Django Blog</title>
+    <title>Blog</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 
 <body>
 
-<header class="navbar">
-    <div class="container nav-wrapper">
+<header class="nav">
+    <div class="wrap">
 
-        <a class="logo" href="/">BlogPlatform</a>
+        <div class="left">
+            <a href="/" class="logo">Blog</a>
+        </div>
 
-        <nav class="nav-links">
+        <div class="center">
             <a href="/">Home</a>
 
             {% if user.is_authenticated %}
                 <a href="/feed/">Feed</a>
-                <a href="/notifications/">Notifications</a>
                 <a href="/categories/">Categories</a>
-                <a href="{% url 'liked-blogs' %}">Liked</a>
-                <a href="{% url 'profile' user.username %}">Profile</a>
+                <a href="/create/">Create</a>
+                <a href="/liked/">Liked</a>
+                <a href="/notifications/">Notifications</a>
             {% endif %}
-        </nav>
+        </div>
 
-        <div class="auth-section">
+        <div class="right">
             {% if user.is_authenticated %}
-                <span class="user">Hi, {{ user.username }}</span>
+                <a href="{% url 'profile' user.username %}">{{ user.username }}</a>
 
                 <form method="POST" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button class="btn btn-danger">Logout</button>
+                    <button>Logout</button>
                 </form>
-
             {% else %}
-                <a class="btn" href="/login/">Login</a>
-                <a class="btn btn-primary" href="/users/register/">Register</a>
+                <a href="/login/">Login</a>
+                <a href="/users/register/">Register</a>
             {% endif %}
         </div>
 
     </div>
 </header>
 
-<main class="container content">
+<main class="wrap">
     {% block content %}{% endblock %}
 </main>
-
-<footer class="footer">
-    <p>© 2026 Blog Platform</p>
-</footer>
 
 </body>
 </html>

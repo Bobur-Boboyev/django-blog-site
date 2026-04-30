@@ -2,15 +2,31 @@
 
 {% block content %}
 
-<h2 style="text-align:center;">Create Account</h2>
+<div class="auth-page">
 
-<form method="POST" class="form">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <div class="auth-card">
 
-    <button class="btn btn-primary" style="width:100%;">
-        Register
-    </button>
-</form>
+        <h1 class="auth-title">Create Account</h1>
+
+        <p class="auth-subtitle">
+            Join and start sharing your ideas
+        </p>
+
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+
+            <button class="btn btn-primary auth-btn">
+                Register
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

@@ -2,13 +2,27 @@
 
 {% block content %}
 
-<h1>Create Your Blog</h1>
+<div class="form-page">
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <div class="form-card">
 
-    <button type="submit">Save</button>
-</form>
+        <h1 class="form-title">Create Your Blog</h1>
+
+        <p class="form-subtitle">
+            Share your thoughts with the world.
+        </p>
+
+        <form method="POST" class="blog-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary">
+                Publish
+            </button>
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock content %}

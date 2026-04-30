@@ -24,16 +24,15 @@ def add_comment(request, post_id):
                 Notification.objects.create(
                     sender=request.user,
                     receiver=post.author,
-                    message=f"{request.user.username} commented on your post '{post.title}'"
+                    message=f"{request.user.username} commented on your post '{post.title}'",
                 )
 
-    return redirect('blog-detail', pk=post.id)
+    return redirect("blog-detail", pk=post.id)
 
 
 @login_required
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
-
 
     if comment.author != request.user:
         return HttpResponseForbidden("You cannot delete this comment")
@@ -41,4 +40,4 @@ def delete_comment(request, comment_id):
     blog_id = comment.post.id
     comment.delete()
 
-    return redirect('blog-detail', pk=blog_id)
+    return redirect("blog-detail", pk=blog_id)

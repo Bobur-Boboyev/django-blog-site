@@ -2,18 +2,45 @@
 
 {% block content %}
 
-<h2>Liked Posts</h2>
+<div class="feed-container">
 
-{% for blog in blogs %}
-    <div class="card">
-        <a href="{% url 'blog-detail' blog.id %}">
-            <h3>{{ blog.title }}</h3>
-        </a>
-    </div>
-{% empty %}
-    <div class="empty-state">
-        You haven't liked any posts yet
-    </div>
-{% endfor %}
+    <h1 class="page-title">Liked Posts</h1>
+
+    {% for blog in blogs %}
+
+        <article class="post-card">
+
+            <div class="post-body">
+
+                <h2 class="post-title">
+                    <a href="{% url 'blog-detail' blog.id %}">
+                        {{ blog.title }}
+                    </a>
+                </h2>
+
+                <p class="post-text">
+                    {{ blog.content|truncatewords:25 }}
+                </p>
+
+            </div>
+
+            <div class="post-actions">
+                <a class="btn btn-secondary" href="{% url 'blog-detail' blog.id %}">
+                    Open
+                </a>
+            </div>
+
+        </article>
+
+    {% empty %}
+
+        <div class="empty-state">
+            <h3>No liked posts yet</h3>
+            <p>When you like posts, they will appear here.</p>
+        </div>
+
+    {% endfor %}
+
+</div>
 
 {% endblock %}

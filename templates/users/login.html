@@ -2,12 +2,31 @@
 
 {% block content %}
 
-<h2 style="text-align:center;">Login</h2>
+<div class="auth-page">
 
-<form method="POST" class="form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" style="width:100%;">Login</button>
-</form>
+    <div class="auth-card">
+
+        <h1 class="auth-title">Welcome back</h1>
+
+        <p class="auth-subtitle">
+            Login to continue to your account
+        </p>
+
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+
+            <button class="btn btn-primary auth-btn">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}
