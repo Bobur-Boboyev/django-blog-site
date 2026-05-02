@@ -52,7 +52,7 @@
 
     <!-- CONTENT -->
     <section class="article-content">
-        {{ blog.content }}
+        {{ blog.content|linebreaks }}
     </section>
 
 </article>
@@ -73,7 +73,7 @@
             </div>
 
             <p class="comment-body">
-                {{ comment.content }}
+                {{ comment.content|linebreaks }}
             </p>
 
             {% if request.user == comment.author %}

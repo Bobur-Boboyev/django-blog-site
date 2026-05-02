@@ -884,3 +884,9 @@ button:hover {
     width: 100%;
     margin-top: 10px;
 }
+
+.custom-textarea {
+    min-height: 220px;
+    line-height: 1.8;
+    font-size: 15px;
+}
